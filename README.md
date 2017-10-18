@@ -1,6 +1,6 @@
 # tmux-darksky
 
-![](https://user-images.githubusercontent.com/1647347/31724002-12dd05a6-b453-11e7-9419-d982c1528286.png)
+![](https://user-images.githubusercontent.com/1647347/31725286-8c6ebc2c-b456-11e7-8e14-84b77f447e57.png)
 
 ### Installation
 
