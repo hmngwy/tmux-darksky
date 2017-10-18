@@ -2,6 +2,10 @@
 
 ![](https://user-images.githubusercontent.com/1647347/31725286-8c6ebc2c-b456-11e7-8e14-84b77f447e57.png)
 
+Each block is an hour.
+
+Colors are currently hardcoded, soon this'll be editable through a dotfile in yaml, as well as the API and location details.
+
 ### Installation
 
 Requires: `python3`
