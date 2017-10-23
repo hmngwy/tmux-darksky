@@ -11,6 +11,7 @@ Requires: `python3`
 Create a configuration file in `$HOME/.tmux-darksky`:
 
 ```ini
+ # only the key is required
 [general]
 hours = 12
 location = 14.5833,120.9667
