@@ -47,7 +47,6 @@ with urllib.request.urlopen(src) as forecast_raw:
     forecast = json.loads(forecast_raw.read())
     hourly_data = [forecast['currently']] + \
         forecast['hourly']['data'][1:show - 1]
-    print(forecast['currently'])
 
     for hda in hourly_data:
         # Spacers
