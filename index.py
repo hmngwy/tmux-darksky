@@ -9,6 +9,7 @@ CFG_FILE = HOME + '/.tmux-darksky'
 
 DEFAULTS = """
 [general]
+space_every = 4
 hours = 12
 location = 14.5833,120.9667
 
@@ -32,23 +33,26 @@ config = configparser.ConfigParser()
 config.read_string(DEFAULTS)
 config.read(CFG_FILE)
 
-print(config.sections())
-
 src = 'https://api.darksky.net/forecast/' + \
     config['general']['key'] + '/' + \
-    config['general']['location'] + '?exclude=currently'
+    config['general']['location']
 
 with urllib.request.urlopen(src) as forecast_raw:
 
     report = ''
+    count = 0
     show = int(config['general']['hours'])
+    space_every = int(config['general']['space_every'])
 
     forecast = json.loads(forecast_raw.read())
-    hourly_data = forecast['hourly']['data']
-    count = 0
-    for hda in hourly_data[:show]:
-        if count % 4 == 0:
-            report += '#[bg=' + config['colors']['BG'] + '] '
+    hourly_data = [forecast['currently']] + \
+        forecast['hourly']['data'][1:show - 1]
+    print(forecast['currently'])
+
+    for hda in hourly_data:
+        # Spacers
+        if count % space_every == 0:
+            report += '#[bg=colour' + config['colors']['BG'] + '] '
         count += 1
 
         match = list(filter(lambda v: v[0] in hda['summary'],
@@ -59,7 +63,7 @@ with urllib.request.urlopen(src) as forecast_raw:
             continue
         else:
             # Unmatched summary
-            report += '#[bg=' + config['colors']['UNSET'] + '] '
+            report += '#[bg=colour' + config['colors']['UNSET'] + '] '
 
-    report += '#[bg=' + config['colors']['BG'] + ']'
+    report += '#[bg=colour' + config['colors']['BG'] + ']'
     print(report)
