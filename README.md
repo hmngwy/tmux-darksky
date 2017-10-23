@@ -31,3 +31,4 @@ Add the plugin via tpm and install:
 set -g @plugin 'hmngwy/tmux-darksky'
 ```
 
+Add `#{darksky}` to your status line.
