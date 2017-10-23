@@ -19,9 +19,12 @@ key = your_darksky_api_key
 [colors]
 BG = 235
 UNSET = 196
+Sunny = 255
 ```
 
-Add the plugin via tpm:
+Refer to index.py for known predictions and default colors.
+
+Add the plugin via tpm and install:
 
 ```
 set -g @plugin 'hmngwy/tmux-darksky'
