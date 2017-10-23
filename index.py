@@ -1,54 +1,65 @@
 import json
 import sys
 import urllib.request
+import os
+import configparser
+
+HOME = os.environ['HOME']
+CFG_FILE = HOME + '/.tmux-darksky'
+
+DEFAULTS = """
+[general]
+hours = 12
+location = 14.5833,120.9667
+
+[colors]
+BG = 235
+UNSET = 196
+Sunny = 255
+Clear = 251
+Partly Cloudy = 246
+Mostly Cloudy = 242
+Overcast = 237
+Drizzle = 32
+Light Rain = 25
+Rain = 20
+Heavy Rain = 18
+Humid = 214
+"""
+
+
+config = configparser.ConfigParser()
+config.read_string(DEFAULTS)
+config.read(CFG_FILE)
+
+print(config.sections())
 
 src = 'https://api.darksky.net/forecast/' + \
-    sys.argv[2] + '/' + sys.argv[1] + '?exclude=currently'
+    config['general']['key'] + '/' + \
+    config['general']['location'] + '?exclude=currently'
 
 with urllib.request.urlopen(src) as forecast_raw:
 
     report = ''
-    show = 12
+    show = int(config['general']['hours'])
 
     forecast = json.loads(forecast_raw.read())
     hourly_data = forecast['hourly']['data']
     count = 0
     for hda in hourly_data[:show]:
         if count % 4 == 0:
-            report += '#[bg=' + sys.argv[3] + '] '
+            report += '#[bg=' + config['colors']['BG'] + '] '
         count += 1
-        if 'Sunny' in hda['summary']:
-            report += '#[bg=colour255] '
-            continue
-        if 'Clear' in hda['summary']:
-            report += '#[bg=colour251] '
-            continue
-        if 'Partly Cloudy' in hda['summary']:
-            report += '#[bg=colour246] '
-            continue
-        if 'Mostly Cloudy' in hda['summary']:
-            report += '#[bg=colour242] '  # 242
-            continue
-        if 'Overcast' in hda['summary']:
-            report += '#[bg=colour237] '  # 237
-            continue
-        if 'Drizzle' in hda['summary']:
-            report += '#[bg=colour32] '
-            continue
-        if 'Light Rain' in hda['summary']:
-            report += '#[bg=colour25] '
-            continue
-        if 'Rain' in hda['summary']:
-            report += '#[bg=colour20] '
-            continue
-        if 'Heavy Rain' in hda['summary']:
-            report += '#[bg=colour18] '
-            continue
-        if 'Humid' in hda['summary']:
-            report += '#[bg=colour214] '
-            continue
-        # Unmatched summary
-        report += '#[bg=colour196] '
 
-    report += '#[bg=' + sys.argv[3] + ']'
+        match = list(filter(lambda v: v[0] in hda['summary'],
+                            config['colors'].items()))
+
+        if match:
+            report += '#[bg=colour' + match[0][1] + '] '
+            continue
+        else:
+            # Unmatched summary
+            report += '#[bg=' + config['colors']['UNSET'] + '] '
+
+    report += '#[bg=' + config['colors']['BG'] + ']'
     print(report)
