@@ -15,6 +15,10 @@ Create a configuration file in `$HOME/.tmux-darksky`:
 hours = 12
 location = 14.5833,120.9667
 key = your_darksky_api_key
+
+[colors]
+BG = 235
+UNSET = 196
 ```
 
 Add the plugin via tpm:
