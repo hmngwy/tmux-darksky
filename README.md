@@ -4,17 +4,17 @@
 
 Each block is an hour.
 
-Colors are currently hardcoded, soon this'll be editable through a dotfile in yaml, as well as the API and location details.
-
 ### Installation
 
 Requires: `python3`
 
-Add your location and Dark Sky API key:
+Create a configuration file in `$HOME/.tmux-darksky`:
 
-```
-set -g @darksky_lon_lat "14.5833,120.9667"
-set -g @darksky_api_key "0a6a8952082439b11cdbcXXXXXXXXX"
+```ini
+[general]
+hours = 12
+location = 14.5833,120.9667
+key = your_darksky_api_key
 ```
 
 Add the plugin via tpm:
