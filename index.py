@@ -54,7 +54,7 @@ with urllib.request.urlopen(src) as forecast_raw:
             report += '#[bg=colour' + config['colors']['BG'] + '] '
         count += 1
 
-        match = list(filter(lambda v: v[0] in hda['summary'],
+        match = list(filter(lambda v: v[0] in hda['summary'].lower(),
                             config['colors'].items()))
 
         if match:
